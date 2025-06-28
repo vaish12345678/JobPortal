@@ -14,7 +14,6 @@ import Companies from './components/Admin/Companies';
 import CompanyRegister from './components/Admin/CompanyCreate';
 import CompanySetup from './components/Admin/CompanySetup';
 import Alljobs from './components/Admin/Jobs';
-
 import JobCreate from './components/Admin/JobCreate';
 import './App.css'
 
