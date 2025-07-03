@@ -1,16 +1,3 @@
-// import React from 'react'
-// import Navbar from '../shared/Navbar'
-// export default function Jobs() {
-//   return (
-//     <div>
-//         <Navbar/>
-//        <div>
-//          <h1>Helloo</h1>
-//        </div>
-
-//     </div>
-//   )
-// }
 
 import Navbar from "../shared/Navbar";
 import {
