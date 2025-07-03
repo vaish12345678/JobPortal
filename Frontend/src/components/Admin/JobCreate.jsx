@@ -42,7 +42,7 @@ const JobCreate = () => {
     fetchCompanies();
   }, []);
 
-  // 🟡 Fetch existing job details if editing
+
   useEffect(() => {
     if (!jobId) return;
 
@@ -113,6 +113,7 @@ const JobCreate = () => {
       toast.error(error?.response?.data?.message || "Failed to post job.");
     }
   };
+
 
   return (
     <div>

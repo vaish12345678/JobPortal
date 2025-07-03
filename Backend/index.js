@@ -10,7 +10,7 @@ import connectDb from "./utils/db.js";
 import userRoutes from "./routes/user.routes.js"
 import companyRoutes from "./routes/company.route.js";
 import jobRoutes from "./routes/job.route.js";
-import applicationRoute from "./routes/application.route.js"
+import applicationRoutes from "./routes/application.route.js"
 
 import profileRoutes from "./routes/profile.js";
 
@@ -36,7 +36,7 @@ app.use("/api/v1/user",userRoutes);
 //https/localhost:3000/register same fro login and update
 app.use("/api/v1/company", companyRoutes);
 app.use("/api/v1/job",jobRoutes);
-app.use("/api/v1/application",applicationRoute);
+app.use("/api/v1/application",applicationRoutes);
 app.use("/api/profile", profileRoutes);
 
 
