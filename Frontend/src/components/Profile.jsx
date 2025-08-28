@@ -52,13 +52,19 @@ const Profile = () => {
 
   const handleSave = async (e) => {
     e.preventDefault();
+    
+    console.log("User ID 2 being sent:", profileData._id);
+
     try {
        const formData = new FormData();
     formData.append("fullname", profileData.name);
     formData.append("bio", profileData.bio);
     formData.append("email", profileData.email);
     formData.append("phoneNumber", profileData.phone);
-    formData.append("skills", profileData.skills);
+     formData.append(
+      "skills",
+      profileData.skills.split(",").map(s => s.trim()).join(",")
+    );
     if (resume) {
       formData.append("resume", resume);
     }
@@ -77,7 +83,7 @@ const Profile = () => {
         
        
       );
-      console.log("User ID being sent:", userId); // Debug
+     
       setIsEditing(false);
       alert("profile updated successfully");
     } 
