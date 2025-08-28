@@ -158,25 +158,23 @@ export const logout = async (req, res) => {
     res.status(500).json({ message: "Logout failed", success: false });
   }
 };
-
 export const updateProfile = async (req, res) => {
   try {
     const { fullname, email, phoneNumber, bio, skills } = req.body;
 
-    const file = req.file;
-
-    //cloudinary ayega....
-    const fileUri = getDataUri(file); //function call
-    const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
-    // uploading a file to Cloudinary
+    let cloudResponse;
+    if (req.file) {
+      const fileUri = getDataUri(req.file);
+      cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+    }
 
     let skillsArray;
     if (skills) {
-      skillsArray = skills.split(",");
+      skillsArray = skills.split(",").map(s => s.trim());
     }
 
-    //update profile must authenticated
-    const userId = req.id; //middleware authentication
+    // Authenticated user
+    const userId = req.id; // from auth middleware
     let user = await User.findById(userId);
     if (!user) {
       return res.status(400).json({
@@ -184,22 +182,24 @@ export const updateProfile = async (req, res) => {
         success: false,
       });
     }
-    //updating data
+
+    // Update fields
     if (fullname) user.fullname = fullname;
     if (email) user.email = email;
     if (phoneNumber) user.phoneNumber = phoneNumber;
     if (bio) user.bio = bio;
     if (skills) user.skills = skillsArray;
 
-    //resume comes later here...
+    // Update resume if uploaded
     if (cloudResponse) {
-      user.profile.resume = cloudResponse.secure_url; //save the cloudinary url
-      user.profile.resumeOriginalName = file.originalname; //saves the original file namee
-      //file.originalname is the original name of the file that was uploaded (e.g., "John_Doe_Resume.pdf").
+      if (!user.profile) user.profile = {}; // ensure profile object exists
+      user.profile.resume = cloudResponse.secure_url;
+      user.profile.resumeOriginalName = req.file.originalname;
     }
 
     await user.save();
-    user = {
+
+    const updatedUser = {
       _id: user._id,
       fullname: user.fullname,
       phoneNumber: user.phoneNumber,
@@ -208,15 +208,32 @@ export const updateProfile = async (req, res) => {
     };
 
     return res.status(200).json({
-      message: "profile updated successfully ",
-      user, //returns user
+      message: "Profile updated successfully",
+      user: updatedUser,
       success: true,
     });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
-      message: "server error while updating profile",
+      message: "Server error while updating profile",
       success: false,
     });
+  }
+};
+
+export const getResume = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const user = await User.findById(userId);
+
+    if (!user || !user.profile?.resume) {
+      return res.status(404).json({ message: "Resume not found" });
+    }
+
+    // Redirect to the Cloudinary URL
+    return res.redirect(user.profile.resume);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Server error" });
   }
 };

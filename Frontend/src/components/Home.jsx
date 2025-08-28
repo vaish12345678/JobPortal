@@ -1,6 +1,6 @@
 import Navbar from "./shared/Navbar";
 import HeroSection from "./HeroSection";
-import CategoryCarousel from "./CategoryCarousal";
+
 import LatestJob from "./LatestJob";
 import Footer from "./Footer";
 import { useEffect ,useState} from "react";

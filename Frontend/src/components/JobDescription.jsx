@@ -1,3 +1,5 @@
+
+
 import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import Navbar from "./shared/Navbar";
@@ -7,7 +9,7 @@ import { toast } from "sonner";
 import { APPLICATION_API_POINT, JOB_API_POINT } from "../utils/Apicall";
 
 const JobDescription = () => {
-  const { id } = useParams(); // get job ID from URL
+  const { id } = useParams();
   const [isApplied, setIsApplied] = useState(false);
   const [job, setJob] = useState(null);
   const [totalApplications, setTotalApplications] = useState(0);
@@ -17,8 +19,6 @@ const JobDescription = () => {
       const res = await axios.get(`${JOB_API_POINT}/${id}/applicants`, {
         withCredentials: true,
       });
-
-      console.log("API Response:", res.data);
       setJob(res.data.job);
       setIsApplied(res.data.isApplied);
       setTotalApplications(res.data.job.applications?.length || 0);
@@ -35,7 +35,6 @@ const JobDescription = () => {
         {},
         { withCredentials: true }
       );
-
       if (res.data.success) {
         toast.success(res.data.message);
         setIsApplied(true);
@@ -59,88 +58,77 @@ const JobDescription = () => {
   }
 
   return (
-    <div>
+    <div className="bg-gray-50 min-h-screen">
       <Navbar />
-      <div className="max-w-7xl mx-auto my-10 px-20">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="font-bold text-xl">{job.title}</h1>
-            <br />
-            <div className="flex gap-2 mb-3">
-              <span className="bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full text-xs text-bold">
-                {job.jobType}
-              </span>
-
-              <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-xs">
-                {job.salary} LPA
-              </span>
-
-              <span className="bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full text-xs">
-                {job.position} Positions
-              </span>
+      <div className="max-w-6xl mx-auto my-10 px-6">
+        {/* Job Card */}
+        <div className="bg-white shadow-lg rounded-xl p-8 border border-gray-200">
+          <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-6">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">{job.title}</h1>
+              <div className="flex flex-wrap gap-3 mt-3">
+                <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+                  {job.jobType}
+                </span>
+                <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium">
+                  {job.salary} LPA
+                </span>
+                <span className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm font-medium">
+                  {job.position} Positions
+                </span>
+              </div>
             </div>
+
+            <Button
+              variant="contained"
+              onClick={isApplied ? null : applyJobHandler}
+              disabled={isApplied}
+              sx={{
+                "&.Mui-disabled": {
+                  backgroundColor: "#b0b0b0",
+                  color: "#ffffff",
+                },
+                px: 5,
+                py: 1.5,
+                fontWeight: "bold",
+              }}
+            >
+              {isApplied ? "Already Applied" : "Apply Now"}
+            </Button>
           </div>
 
-       <Button
-  variant="contained"
-  onClick={isApplied ? null : applyJobHandler}
-  disabled={isApplied}
-  sx={{
-    "&.Mui-disabled": {
-      backgroundColor: "#b0b0b0", // Light gray
-      color: "#ffffff", // White text
-    },
-  }}
->
-  {isApplied ? "Already Applied" : "Apply Now"}
-</Button>
-
+          {/* Job Description */}
+          <div className="mt-8 border-t pt-6 space-y-4">
+            <div className="flex justify-between">
+              <h2 className="font-semibold text-gray-700">Role:</h2>
+              <p className="text-gray-900">{job.title}</p>
+            </div>
+            <div className="flex justify-between">
+              <h2 className="font-semibold text-gray-700">Location:</h2>
+              <p className="text-gray-900">{job.location}</p>
+            </div>
+            <div className="flex justify-between">
+              <h2 className="font-semibold text-gray-700">Description:</h2>
+              <p className="text-gray-900">{job.description}</p>
+            </div>
+            <div className="flex justify-between">
+              <h2 className="font-semibold text-gray-700">Experience:</h2>
+              <p className="text-gray-900">{job.experience}</p>
+            </div>
+            <div className="flex justify-between">
+              <h2 className="font-semibold text-gray-700">Salary:</h2>
+              <p className="text-gray-900">{job.salary} LPA</p>
+            </div>
+            <div className="flex justify-between">
+              <h2 className="font-semibold text-gray-700">Total Applications:</h2>
+              <p className="text-gray-900">{totalApplications}</p>
+            </div>
+            <div className="flex justify-between">
+              <h2 className="font-semibold text-gray-700">Posted:</h2>
+              <p className="text-gray-900">{job.postedAgo}</p>
+            </div>
+          </div>
         </div>
-
-        <h1 className="border-b-2 border-b-gray-300 font-medium py-4">
-          Job Description
-        </h1>
-      </div>
-
-      <div className="max-w-6xl mx-auto px-6 my-10">
-        <h1 className="font-bold my-1 px-4">
-          Role:{" "}
-          <span className="pl-4 font-normal text-gray-800">{job.title}</span>
-        </h1>
-        <h1 className="font-bold my-1 px-4">
-          Location:{" "}
-          <span className="pl-4 font-normal text-gray-800">{job.location}</span>
-        </h1>
-        <h1 className="font-bold my-1 px-4">
-          Description:{" "}
-          <span className="pl-4 font-normal text-gray-800">
-            {job.description}
-          </span>
-        </h1>
-        <h1 className="font-bold my-1 px-4">
-          Experience:{" "}
-          <span className="pl-4 font-normal text-gray-800">
-            {job.experience}
-          </span>
-        </h1>
-        <h1 className="font-bold my-1 px-4">
-          Salary:{" "}
-          <span className="pl-4 font-normal text-gray-800">
-            {job.salary} LPA
-          </span>
-        </h1>
-        <h1 className="font-bold my-1 px-4">
-          Total Applications:{" "}
-          <span className="pl-4 font-normal text-gray-800">
-            {totalApplications}
-          </span>
-        </h1>
-        <h1 className="font-bold my-1 px-4">
-          Posted Date:{" "}
-          <span className="pl-4 font-normal text-gray-800">
-            {job.postedAgo}
-          </span>
-        </h1>
       </div>
     </div>
   );
