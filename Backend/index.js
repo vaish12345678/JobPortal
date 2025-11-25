@@ -24,10 +24,19 @@ app.get("/home",(req,res)=>{
     res.send("i am coming from backend");
 });
 
-const corsOptions={
-    origin:"http://localhost:5173",//frontend server connect to apis
-    credentials:true
-}
+// const corsOptions={
+//     origin:"http://localhost:5173",//frontend server connect to apis
+//     credentials:true
+// }
+
+// app.use(cors(corsOptions));
+const corsOptions = {
+  origin: [
+    "http://localhost:5173",
+    "https://job-portal-i6kb.vercel.app"   
+  ],
+  credentials: true,
+};
 
 app.use(cors(corsOptions));
 
