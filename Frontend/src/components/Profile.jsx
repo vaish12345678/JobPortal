@@ -225,7 +225,7 @@ import PhoneIcon from "@mui/icons-material/Phone";
 import CodeIcon from "@mui/icons-material/Code";
 import DescriptionIcon from "@mui/icons-material/Description";
 import PersonIcon from "@mui/icons-material/Person";
-
+import { USER_API_POINT } from "../utils/Apicall";
 const Profile = () => {
   const [resume, setResume] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -239,7 +239,7 @@ const Profile = () => {
   });
 
   useEffect(() => {
-    axios.get("http://localhost:3000/api/v1/user/me", {
+    axios.get(`${USER_API_POINT}/me`, {
       withCredentials: true,
     })
     .then((res) => {
@@ -286,7 +286,7 @@ const Profile = () => {
       console.log("🔍 Sending form data...");
 
       const response = await axios.put(
-        `http://localhost:3000/api/v1/user/profile/update`, 
+        `${USER_API_POINT}/profile/update`, 
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -297,7 +297,7 @@ const Profile = () => {
       console.log("✅ Update response:", response.data);
       
       // Refresh the profile data
-      const userRes = await axios.get("http://localhost:3000/api/v1/user/me", {
+      const userRes = await axios.get(`${USER_API_POINT}/me`, {
         withCredentials: true,
       });
       
@@ -524,7 +524,7 @@ const Profile = () => {
 
         {/* Jobs Table */}
         <div className="mt-10 bg-white shadow-lg p-8 rounded-2xl border border-gray-100">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Applied Jobs</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6"></h2>
           <AppliedJobsTable />
         </div>
       </div>
