@@ -72,8 +72,9 @@ export const getApplicant = async (req, res) => {
   try {
     const jobId = req.params.id;
 
-    const applications = await Application.find({ job: jobId }).populate("user", "name email");
-
+  //  const applications = await Application.find({ job: jobId }).populate("user", "fullname email");
+  // Remove field selection to get all user fields
+const applications = await Application.find({ job: jobId }).populate("user");
     return res.status(200).json({
       success: true,
       applicants: applications,
