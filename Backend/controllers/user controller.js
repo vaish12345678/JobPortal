@@ -160,80 +160,95 @@ export const logout = async (req, res) => {
 };
 export const updateProfile = async (req, res) => {
   try {
+    console.log("🔍 DEBUG - User ID:", req.id);
+    console.log("🔍 DEBUG - Request Body:", req.body);
+    
     const { fullname, email, phoneNumber, bio, skills } = req.body;
 
     let cloudResponse;
     if (req.file) {
       const fileUri = getDataUri(req.file);
-      cloudResponse = await cloudinary.uploader.upload(fileUri.content);
-    }
-
-    let skillsArray;
-    if (skills) {
-      skillsArray = skills.split(",").map(s => s.trim());
-    }
-
-    // Authenticated user
-    const userId = req.id; // from auth middleware
-    let user = await User.findById(userId);
-    if (!user) {
-      return res.status(400).json({
-        message: "User not found",
-        success: false,
+      cloudResponse = await cloudinary.uploader.upload(fileUri.content, {
+        resource_type: 'raw',
+        folder: 'resumes'
       });
+      console.log("✅ Cloudinary PDF URL:", cloudResponse.secure_url);
     }
 
-    // Update fields
-    if (fullname) user.fullname = fullname;
-    if (email) user.email = email;
-    if (phoneNumber) user.phoneNumber = phoneNumber;
-    if (bio) user.bio = bio;
-    if (skills) user.skills = skillsArray;
-
-    // Update resume if uploaded
-    if (cloudResponse) {
-      if (!user.profile) user.profile = {}; // ensure profile object exists
-      user.profile.resume = cloudResponse.secure_url;
-      user.profile.resumeOriginalName = req.file.originalname;
-    }
-
-    await user.save();
-
-    const updatedUser = {
-      _id: user._id,
-      fullname: user.fullname,
-      phoneNumber: user.phoneNumber,
-      role: user.role,
-      profile: user.profile,
+    // FIX: Update data structure to match schema
+    const updateData = {
+      fullname,
+      email,
+      phoneNumber,
+      profile: {
+        bio,
+        skills: skills ? skills.split(',').map(skill => skill.trim()) : [],
+        ...(cloudResponse?.secure_url && { resume: cloudResponse.secure_url })
+      }
     };
 
-    return res.status(200).json({
-      message: "Profile updated successfully",
-      user: updatedUser,
+    const updatedUser = await User.findByIdAndUpdate(
+      req.id, // ← CHANGED from req.user._id
+      updateData,
+      { new: true }
+    );
+
+    console.log("✅ Final Updated User:", updatedUser);
+
+    res.status(200).json({
       success: true,
+      message: "Profile Updated Successfully",
+      user: updatedUser
     });
+
   } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      message: "Server error while updating profile",
+    console.log("❌ Error:", error);
+    res.status(500).json({
       success: false,
+      message: "Error in updating profile"
     });
   }
 };
+// export const getResume = async (req, res) => {
+//   try {
+//     const userId = req.params.id;
+//     const user = await User.findById(userId);
+
+//     if (!user || !user.profile?.resume) {
+//       return res.status(404).json({ message: "Resume not found" });
+//     }
+
+//     // Redirect to the Cloudinary URL
+//     return res.redirect(user.profile.resume);
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(500).json({ message: "Server error" });
+//   }
+// };
+
 
 export const getResume = async (req, res) => {
   try {
-    const userId = req.params.id;
-    const user = await User.findById(userId);
-
-    if (!user || !user.profile?.resume) {
-      return res.status(404).json({ message: "Resume not found" });
+    const user = await User.findById(req.id);
+    
+    if (!user || !user.profile.resume) {
+      return res.status(404).json({
+        success: false,
+        message: "Resume not found"
+      });
     }
 
-    // Redirect to the Cloudinary URL
-    return res.redirect(user.profile.resume);
+    // ✅ FIX: Return the Cloudinary URL instead of file data
+    res.status(200).json({
+      success: true,
+      resumeUrl: user.profile.resume // This should be the Cloudinary URL
+    });
+
   } catch (error) {
-    console.log(error);
-    return res.status(500).json({ message: "Server error" });
+    console.log("❌ Error fetching resume:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching resume"
+    });
   }
 };

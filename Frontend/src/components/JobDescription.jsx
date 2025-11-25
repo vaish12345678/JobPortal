@@ -1,18 +1,33 @@
-
-
 import React, { useState, useEffect } from "react";
-import Button from "@mui/material/Button";
+import { 
+  Button, 
+  Box, 
+  Typography, 
+  Card, 
+  Chip, 
+  Paper, 
+  Divider,
+  CircularProgress
+} from "@mui/material";
 import Navbar from "./shared/Navbar";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "sonner";
 import { APPLICATION_API_POINT, JOB_API_POINT } from "../utils/Apicall";
+import WorkIcon from "@mui/icons-material/Work";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import BusinessIcon from "@mui/icons-material/Business";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import ScheduleIcon from "@mui/icons-material/Schedule";
+import PeopleIcon from "@mui/icons-material/People";
+import DescriptionIcon from "@mui/icons-material/Description";
 
 const JobDescription = () => {
   const { id } = useParams();
   const [isApplied, setIsApplied] = useState(false);
   const [job, setJob] = useState(null);
   const [totalApplications, setTotalApplications] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   const fetchJob = async () => {
     try {
@@ -25,6 +40,8 @@ const JobDescription = () => {
     } catch (err) {
       console.error(err);
       toast.error("Failed to fetch job details.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -49,88 +66,204 @@ const JobDescription = () => {
     fetchJob();
   }, [id]);
 
+  if (loading) {
+    return (
+      <Box className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <Box className="text-center">
+          <CircularProgress size={40} />
+          <Typography variant="h6" className="mt-2 text-gray-600">
+            Loading...
+          </Typography>
+        </Box>
+      </Box>
+    );
+  }
+
   if (!job) {
     return (
-      <div className="text-center mt-10 text-red-500">
-        Job not found or still loading...
-      </div>
+      <Box className="min-h-screen bg-gray-50">
+        <Navbar />
+        <Box className="text-center mt-10">
+          <Typography variant="h5" color="error">
+            Job not found
+          </Typography>
+        </Box>
+      </Box>
     );
   }
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <Box className="min-h-screen bg-gray-50">
       <Navbar />
-      <div className="max-w-6xl mx-auto my-10 px-6">
-        {/* Job Card */}
-        <div className="bg-white shadow-lg rounded-xl p-8 border border-gray-200">
-          <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-6">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">{job.title}</h1>
-              <div className="flex flex-wrap gap-3 mt-3">
-                <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
-                  {job.jobType}
-                </span>
-                <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium">
-                  {job.salary} LPA
-                </span>
-                <span className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm font-medium">
-                  {job.position} Positions
-                </span>
-              </div>
-            </div>
+      <Box className="max-w-4xl mx-auto py-4 px-4">
+        {/* Main Job Card */}
+        <Card 
+          sx={{ 
+            borderRadius: 2,
+            boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+          }}
+        >
+          {/* Header Section */}
+          <Box sx={{ p: 3 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
+              <Box sx={{ flex: 1 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                  <WorkIcon color="primary" sx={{ fontSize: 24 }} />
+                  <Typography variant="h5" fontWeight="bold">
+                    {job.title}
+                  </Typography>
+                </Box>
+                
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+                  <BusinessIcon sx={{ fontSize: 16, color: 'text.secondary' }} />
+                  <Typography variant="body1" color="text.secondary">
+                    {job.company?.name}
+                  </Typography>
+                </Box>
 
-            <Button
-              variant="contained"
-              onClick={isApplied ? null : applyJobHandler}
-              disabled={isApplied}
-              sx={{
-                "&.Mui-disabled": {
-                  backgroundColor: "#b0b0b0",
-                  color: "#ffffff",
-                },
-                px: 5,
-                py: 1.5,
-                fontWeight: "bold",
-              }}
-            >
-              {isApplied ? "Already Applied" : "Apply Now"}
-            </Button>
-          </div>
+                {/* Job Tags */}
+                <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                  <Chip 
+                    size="small"
+                    label={job.jobType} 
+                    color="primary" 
+                    variant="outlined"
+                  />
+                  <Chip 
+                    size="small"
+                    label={`${job.salary} LPA`} 
+                    color="success" 
+                    variant="outlined"
+                  />
+                  <Chip 
+                    size="small"
+                    label={`${job.position} Positions`} 
+                    color="info" 
+                    variant="outlined"
+                  />
+                </Box>
+              </Box>
 
-          {/* Job Description */}
-          <div className="mt-8 border-t pt-6 space-y-4">
-            <div className="flex justify-between">
-              <h2 className="font-semibold text-gray-700">Role:</h2>
-              <p className="text-gray-900">{job.title}</p>
-            </div>
-            <div className="flex justify-between">
-              <h2 className="font-semibold text-gray-700">Location:</h2>
-              <p className="text-gray-900">{job.location}</p>
-            </div>
-            <div className="flex justify-between">
-              <h2 className="font-semibold text-gray-700">Description:</h2>
-              <p className="text-gray-900">{job.description}</p>
-            </div>
-            <div className="flex justify-between">
-              <h2 className="font-semibold text-gray-700">Experience:</h2>
-              <p className="text-gray-900">{job.experience}</p>
-            </div>
-            <div className="flex justify-between">
-              <h2 className="font-semibold text-gray-700">Salary:</h2>
-              <p className="text-gray-900">{job.salary} LPA</p>
-            </div>
-            <div className="flex justify-between">
-              <h2 className="font-semibold text-gray-700">Total Applications:</h2>
-              <p className="text-gray-900">{totalApplications}</p>
-            </div>
-            <div className="flex justify-between">
-              <h2 className="font-semibold text-gray-700">Posted:</h2>
-              <p className="text-gray-900">{job.postedAgo}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+              {/* Apply Button */}
+              <Button
+                variant="contained"
+                size="medium"
+                onClick={isApplied ? null : applyJobHandler}
+                disabled={isApplied}
+                sx={{
+                  "&.Mui-disabled": {
+                    backgroundColor: "#10b981",
+                    color: "white",
+                  },
+                  px: 3,
+                  py: 1,
+                  fontSize: '0.9rem',
+                  fontWeight: 'bold',
+                  borderRadius: 1,
+                  textTransform: 'none',
+                  minWidth: '120px'
+                }}
+              >
+                {isApplied ? "Applied ✓" : "Apply Now"}
+              </Button>
+            </Box>
+          </Box>
+
+          <Divider />
+
+          {/* Job Details */}
+          <Box sx={{ p: 3 }}>
+            <Typography variant="h6" fontWeight="600" sx={{ mb: 2 }}>
+              Job Details
+            </Typography>
+
+            <Box sx={{ display: 'grid', gap: 2 }}>
+              {/* Location */}
+              <Paper sx={{ p: 2, borderRadius: 1 }} elevation={0}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <LocationOnIcon sx={{ fontSize: 18, color: 'primary.main' }} />
+                  <Box>
+                    <Typography variant="body2" color="text.secondary">
+                      Location
+                    </Typography>
+                    <Typography variant="body1" fontWeight="500">
+                      {job.location}
+                    </Typography>
+                  </Box>
+                </Box>
+              </Paper>
+
+              {/* Experience */}
+              <Paper sx={{ p: 2, borderRadius: 1 }} elevation={0}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <ScheduleIcon sx={{ fontSize: 18, color: 'primary.main' }} />
+                  <Box>
+                    <Typography variant="body2" color="text.secondary">
+                      Experience
+                    </Typography>
+                    <Typography variant="body1" fontWeight="500">
+                      {job.experience}
+                    </Typography>
+                  </Box>
+                </Box>
+              </Paper>
+
+              {/* Salary */}
+              <Paper sx={{ p: 2, borderRadius: 1 }} elevation={0}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <AttachMoneyIcon sx={{ fontSize: 18, color: 'primary.main' }} />
+                  <Box>
+                    <Typography variant="body2" color="text.secondary">
+                      Salary
+                    </Typography>
+                    <Typography variant="body1" fontWeight="500">
+                      {job.salary} LPA
+                    </Typography>
+                  </Box>
+                </Box>
+              </Paper>
+
+              {/* Applications */}
+              <Paper sx={{ p: 2, borderRadius: 1 }} elevation={0}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <PeopleIcon sx={{ fontSize: 18, color: 'primary.main' }} />
+                  <Box>
+                    <Typography variant="body2" color="text.secondary">
+                      Applications
+                    </Typography>
+                    <Typography variant="body1" fontWeight="500">
+                      {totalApplications}
+                    </Typography>
+                  </Box>
+                </Box>
+              </Paper>
+
+              {/* Job Description */}
+              <Paper sx={{ p: 2, borderRadius: 1 }} elevation={0}>
+                <Typography variant="body2" color="text.secondary" gutterBottom>
+                  Description
+                </Typography>
+                <Typography variant="body1" sx={{ lineHeight: 1.5 }}>
+                  {job.description}
+                </Typography>
+              </Paper>
+
+              {/* Requirements */}
+              {job.requirements && (
+                <Paper sx={{ p: 2, borderRadius: 1 }} elevation={0}>
+                  <Typography variant="body2" color="text.secondary" gutterBottom>
+                    Requirements
+                  </Typography>
+                  <Typography variant="body1" sx={{ lineHeight: 1.5 }}>
+                    {job.requirements}
+                  </Typography>
+                </Paper>
+              )}
+            </Box>
+          </Box>
+        </Card>
+      </Box>
+    </Box>
   );
 };
 
