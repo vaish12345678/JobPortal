@@ -24,10 +24,19 @@ app.get("/home",(req,res)=>{
     res.send("i am coming from backend");
 });
 
-const corsOptions={
-    origin:"http://localhost:5173",//frontend server connect to apis
-    credentials:true
-}
+// const corsOptions={
+//     origin:"http://localhost:5173",//frontend server connect to apis
+//     credentials:true
+// }
+
+// app.use(cors(corsOptions));
+const corsOptions = {
+    origin: [
+        "http://localhost:5173",                     // local dev
+        "https://visionary-pasca-2367ba.netlify.app" // deployed frontend
+    ],
+    credentials: true
+};
 
 app.use(cors(corsOptions));
 

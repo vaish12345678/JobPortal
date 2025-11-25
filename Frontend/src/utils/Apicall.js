@@ -1,6 +1,6 @@
+const BASE_URL = "https://jobportal-5k9c.onrender.com/api/v1";
 
-export const USER_API_POINT = "http://localhost:3000/api/v1/user";
-export const JOB_API_POINT ="http://localhost:3000/api/v1/job";
-export const APPLICATION_API_POINT ="http://localhost:3000/api/v1/application";
-export const COMPANY_API_POINT = "http://localhost:3000/api/v1/company";
-//user api
+export const USER_API_POINT = `${BASE_URL}/user`;
+export const JOB_API_POINT = `${BASE_URL}/job`;
+export const APPLICATION_API_POINT = `${BASE_URL}/application`;
+export const COMPANY_API_POINT = `${BASE_URL}/company`;
