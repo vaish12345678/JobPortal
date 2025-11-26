@@ -8,7 +8,7 @@ import DataUriParser from "datauri/parser.js";
 import path from "path";
 
 const storage = multer.memoryStorage();
-const singleUpload = multer({ storage }).single("file");
+const singleUpload = multer({ storage }).single("resume");
 
 const parser = new DataUriParser();
 export const getDataUri = (file) => {

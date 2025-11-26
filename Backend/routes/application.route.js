@@ -7,7 +7,7 @@ const router= express.Router();
 router.route("/apply/:id").post(isAuthenticated,applyJob);//isAuth = middleware
 router.route("/get").get(isAuthenticated,getAppliedJobs);
 router.route("/:id/applicants").get(isAuthenticated,getApplicant);
-router.route("/status/:id/update").put(isAuthenticated,updateStatus);
+router.route("/:id/status").put(isAuthenticated,updateStatus);
 
 //middleware is in between req and res if middleware is true or correct thenonly it passes the conditions
 export default router;

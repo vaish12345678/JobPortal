@@ -1,105 +1,16 @@
-// import React from "react";
-
-// const FilterCard = () => {
-//   return (
-//     <div className="p-4 border rounded-lg shadow-sm bg-white">
-//       <h2 className="text-xl font-semibold text-blue-600 mb-4">Filter Jobs</h2>
-//       <div className="flex flex-col gap-4">
-//         <select className="border p-2 rounded">
-//           <option>Job Type</option>
-//           <option>Full Time</option>
-//           <option>Part Time</option>
-//           <option>Internship</option>
-//         </select>
-//         <select className="border p-2 rounded">
-//           <option>Location</option>
-//           <option>Pune</option>
-//           <option>Mumbai</option>
-//           <option>Remote</option>
-//         </select>
-//         <select className="border p-2 rounded">
-//           <option>Experience Level</option>
-//           <option>Fresher</option>
-//           <option>1-3 Years</option>
-//           <option>3+ Years</option>
-//         </select>
-//         <button className="bg-green-600 text-white py-2 rounded hover:bg-green-700 transition">
-//           Apply Filter
-//         </button>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default FilterCard;'
-
-
-// import react from "react";
-// const filterData = [
-//     {
-//         filterType:"Location",
-//         array:["Delhi,Banglore,Pune,Mumbai"]
-//     },
-//     {
-//         filterType:"Industry",
-//         array:["frontend Developer","Backend Developer", "FullStack Developer"]
-//     },
-//     {
-//         filterType:"Salary",
-//         array:["0-20k","20-80k", "80- 1.5 lakh"]
-//     }
-
-    
-// ]
-
-
-// const FilterCard=()=>{
-//     return(
-//         <div>
-//             <h1>Filter Jobs</h1>
-
-//         </div>
-//     )
-// }
-
-// export default FilterCard
-
-
-// import React, { useState } from 'react';
-
-// const Filter = ({ onFilterChange }) => {
-//   const [selected, setSelected] = useState('');
-
-//   const handleChange = (e) => {
-//     const value = e.target.value;
-//     setSelected(value);
-//     onFilterChange(value); // Pass selected value to parent
-//   };
-
-//   return (
-//     <div className="bg-white p-4 rounded-xl shadow-md w-full max-w-md mx-auto">
-//       <h2 className="text-xl font-semibold mb-4">Filter by Job Type</h2>
-//       <form className="space-y-2">
-//         {['Full-time', 'Part-time', 'Internship', 'Remote'].map((type) => (
-//           <label key={type} className="flex items-center space-x-2 cursor-pointer">
-//             <input
-//               type="radio"
-//               name="jobType"
-//               value={type}
-//               checked={selected === type}
-//               onChange={handleChange}
-//               className="form-radio text-blue-500"
-//             />
-//             <span>{type}</span>
-//           </label>
-//         ))}
-//       </form>
-//     </div>
-//   );
-// };
-
-// export default Filter;
 import React, { useState } from 'react';
+import { 
+  Box, 
+  Typography, 
+  Radio, 
+  RadioGroup, 
+  FormControlLabel, 
+  Card, 
+  Chip,
+  IconButton 
+} from '@mui/material';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import ClearIcon from '@mui/icons-material/Clear';
 
 const filterData = [
   {
@@ -110,45 +21,159 @@ const filterData = [
     filterType: "Industry",
     array: ["Frontend Developer", "Backend Developer", "FullStack Developer"]
   },
-  {
-    filterType: "Salary",
-    array: ["5k-20k", "20-80k", "80k-1.5L"]
-  }
 ];
 
-const Filter = ({ onFiltersChange }) => {
+const FilterCard = ({ onFiltersChange }) => {
   const [selectedFilters, setSelectedFilters] = useState({});
 
   const handleChange = (filterType, value) => {
     const newFilters = { ...selectedFilters, [filterType]: value };
     setSelectedFilters(newFilters);
-    onFiltersChange(newFilters); // Send updated filters to parent
+    onFiltersChange(newFilters);
+  };
+
+  const clearFilter = (filterType) => {
+    const newFilters = { ...selectedFilters };
+    delete newFilters[filterType];
+    setSelectedFilters(newFilters);
+    onFiltersChange(newFilters);
+  };
+
+  const clearAllFilters = () => {
+    setSelectedFilters({});
+    onFiltersChange({});
   };
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow w-full max-w-md space-y-6">
-      {filterData.map((filterGroup) => (
-        <div key={filterGroup.filterType}>
-          <h3 className="text-lg font-semibold mb-2">{filterGroup.filterType}</h3>
-          <div className="space-y-1">
-            {filterGroup.array.map((option) => (
-              <label key={option} className="flex items-center space-x-2 cursor-pointer">
-                <input
-                  type="radio"
-                  name={filterGroup.filterType}
-                  value={option}
-                  checked={selectedFilters[filterGroup.filterType] === option}
-                  onChange={() => handleChange(filterGroup.filterType, option)}
-                  className="form-radio text-blue-500"
-                />
-                <span>{option}</span>
-              </label>
+    <Card 
+      sx={{ 
+        p: 3, 
+        borderRadius: 3,
+        boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+        border: '1px solid',
+        borderColor: 'divider'
+      }}
+    >
+      {/* Header */}
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <FilterListIcon color="primary" />
+          <Typography variant="h6" fontWeight="600">
+            Filters
+          </Typography>
+        </Box>
+        {Object.keys(selectedFilters).length > 0 && (
+          <IconButton 
+            size="small" 
+            onClick={clearAllFilters}
+            sx={{ color: 'text.secondary' }}
+          >
+            <ClearIcon fontSize="small" />
+          </IconButton>
+        )}
+      </Box>
+
+      {/* Active Filters Chips */}
+      {Object.keys(selectedFilters).length > 0 && (
+        <Box sx={{ mb: 3 }}>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+            Active filters:
+          </Typography>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+            {Object.entries(selectedFilters).map(([key, value]) => (
+              <Chip
+                key={key}
+                label={`${key}: ${value}`}
+                size="small"
+                onDelete={() => clearFilter(key)}
+                color="primary"
+                variant="outlined"
+              />
             ))}
-          </div>
-        </div>
-      ))}
-    </div>
+          </Box>
+        </Box>
+      )}
+
+      {/* Filter Groups */}
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+        {filterData.map((filterGroup) => (
+          <Box key={filterGroup.filterType}>
+            <Typography 
+              variant="subtitle1" 
+              fontWeight="600" 
+              sx={{ 
+                mb: 2,
+                color: 'primary.main',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1
+              }}
+            >
+              {filterGroup.filterType}
+            </Typography>
+            
+            <RadioGroup
+              value={selectedFilters[filterGroup.filterType] || ''}
+              onChange={(e) => handleChange(filterGroup.filterType, e.target.value)}
+            >
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                {filterGroup.array.map((option) => (
+                  <FormControlLabel
+                    key={option}
+                    value={option}
+                    control={
+                      <Radio 
+                        size="small" 
+                        sx={{ 
+                          color: 'primary.main',
+                          '&.Mui-checked': {
+                            color: 'primary.main',
+                          },
+                        }}
+                      />
+                    }
+                    label={
+                      <Typography variant="body2">
+                        {option}
+                      </Typography>
+                    }
+                    sx={{
+                      margin: 0,
+                      padding: '4px 0',
+                      '& .MuiFormControlLabel-label': {
+                        fontSize: '0.875rem'
+                      }
+                    }}
+                  />
+                ))}
+              </Box>
+            </RadioGroup>
+          </Box>
+        ))}
+      </Box>
+
+      {/* Clear All Button */}
+      {Object.keys(selectedFilters).length > 0 && (
+        <Box sx={{ mt: 3, pt: 2, borderTop: '1px solid', borderColor: 'divider' }}>
+          <Typography 
+            variant="body2" 
+            onClick={clearAllFilters}
+            sx={{ 
+              color: 'error.main',
+              cursor: 'pointer',
+              textAlign: 'center',
+              fontWeight: '500',
+              '&:hover': {
+                textDecoration: 'underline'
+              }
+            }}
+          >
+            Clear all filters
+          </Typography>
+        </Box>
+      )}
+    </Card>
   );
 };
 
-export default Filter;
+export default FilterCard;
