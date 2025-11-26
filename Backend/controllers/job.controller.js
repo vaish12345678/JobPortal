@@ -1,49 +1,56 @@
 import {Job} from "../models/job.model.js";
 import { Application } from "../models/application model.js";
-//admin posts job
-export const postJob= async(req,res)=>{
-   try{
 
+
+export const postJob = async (req, res) => {
+  try {
     if (req.role !== "recruiter") {
-      return res.status(403).json({
-        message: "Only recruiters can post jobs",
-        success: false,
-      });
+      return res.status(403).json({ message: "Only recruiters can post jobs", success: false });
     }
-    const {title, description, requirements,salary
-        ,location, jobType, experience  , position, companyId
-    }= req.body;
-    const userId= req.id;
-    if(!title|| !description||!requirements||!salary||
-        !location||!jobType||! experience  || !position ||!companyId){
 
-        return  res.status(400).json({
-            message:"something is missing",
-            success:false,
-        });
-   }
-   const job = await Job.create({
-    title, 
-    description, 
-    requirements:requirements.split(',').map(r => r.trim()),
-    salary:Number(salary)
-    ,location, 
-    jobType, 
-    experienceLevel:experience  , 
-    position, 
-    company:companyId,
-    created_by:userId
+    const {
+      title,
+      description,
+      requirements,
+      salary,
+      location,
+      jobType,
+      experience, 
+      position,   
+      companyId,
+    } = req.body;
+
+    // Basic validation
+    if (!title || !description || !requirements || !salary || !location || !jobType || (experience === undefined) || (position === undefined) || !companyId) {
+      return res.status(400).json({ message: "Some fields are missing", success: false });
+    }
+
+    const userId = req.id;
+
+    const job = await Job.create({
+  title,
+  description,
+  requirements: requirements.split(',').map(r => r.trim()),
+  salary: Number(salary),
+  location,
+  jobType,
+  experienceLevel: Number(experience),
+  position: Number(position),
+  company: companyId,
+  created_by: userId
 });
-  return res.status(201).json({
-    message:"new job created successfully",
-    Job,
-    success :true,
-  });
-} catch(error){
-    console.log(error);
-   }
-}
 
+
+    return res.status(201).json({
+      message: "New job created successfully",
+      job,
+      success: true,
+    });
+  } catch (error) {
+    console.error("Error in postJob:", error);
+    return res.status(500).json({ message: "Server error", success: false });
+  }
+};
 //student
 // controllers/jobController.js
 
