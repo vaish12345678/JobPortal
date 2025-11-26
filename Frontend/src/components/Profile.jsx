@@ -330,16 +330,7 @@ const Profile = () => {
         {/* Display Profile */}
         <div className="bg-white shadow-lg rounded-2xl p-8 relative border border-gray-100">
           <div className="flex items-start gap-6">
-            <Avatar
-              alt="User Avatar"
-              src="https://images.unsplash.com/photo-1706426629246-2a3c3e3e3ff2"
-              sx={{ 
-                width: 120, 
-                height: 120,
-                border: "4px solid #f3f4f6"
-              }}
-              className="shadow-md"
-            />
+           
             <div className="flex-1">
               <div className="flex items-center justify-between">
                 <div>
