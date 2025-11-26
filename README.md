@@ -47,7 +47,7 @@ This project demonstrates **real-world job platform functionalities** with clean
 
 | Home Page | Job Listings | Create Job |
 |-----------|-------------|------------|
-| ![Home Page](screenshots/home.png) | ![Job Listings](screenshots/JobListing.png) | ![Create Job](screenshots/CreateCompany.png) |
+| ![Home Page](screenshots/Home.png) | ![Job Listings](screenshots/JobListing.png) | ![Create Job](screenshots/CreateCompany.png) |
 
 | User Profile | 
 |--------------|
