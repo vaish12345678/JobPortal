@@ -53,7 +53,7 @@ const JobCreate = () => {
     fetchCompanies();
   }, []);
 
-  
+
   useEffect(() => {
     if (!jobId) return;
 
@@ -155,6 +155,7 @@ const JobCreate = () => {
     }
   };
 
+
   return (
     <div>
       <Navbar />
@@ -207,3 +208,4 @@ const JobCreate = () => {
 };
 
 export default JobCreate;
+

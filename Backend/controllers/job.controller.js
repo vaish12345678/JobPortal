@@ -1,6 +1,7 @@
 import {Job} from "../models/job.model.js";
 import { Application } from "../models/application model.js";
 
+
 export const postJob = async (req, res) => {
   try {
     if (req.role !== "recruiter") {
