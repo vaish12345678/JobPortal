@@ -15,19 +15,16 @@ import profileRoutes from "./routes/profile.js";
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://effulgent-gelato-4f5d9e.netlify.app",
+  "https://effulgent-gelato-4f5d9e.netlify.app"
 ];
 
 app.use(
   cors({
     origin: allowedOrigins,
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true
   })
 );
 
-app.options("*", cors());
 
 
 app.use(express.json());
