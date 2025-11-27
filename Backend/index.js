@@ -24,15 +24,20 @@ app.get("/home",(req,res)=>{
     res.send("i am coming from backend");
 });
 
-const corsOptions={
-    origin:"http://localhost:5173",//frontend server connect to apis
-    credentials:true
-}
+// const corsOptions={
+//     origin:"http://localhost:5173",//frontend server connect to apis
+//     credentials:true
+// }
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 
 
-
+const corsOptions = {
+  origin: ["http://localhost:5173", "https://effulgent-gelato-4f5d9e.netlify.app"],
+  credentials: true
+};
+ app.use(cors(corsOptions));
+ 
 //apis
 app.use("/api/v1/user",userRoutes);
 //https/localhost:3000/register same fro login and update
