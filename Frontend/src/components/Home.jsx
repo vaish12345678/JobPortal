@@ -1,3 +1,4 @@
+import axios from "axios";
 import Navbar from "./shared/Navbar";
 import HeroSection from "./HeroSection";
 

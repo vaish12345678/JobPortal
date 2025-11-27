@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { 
   Button, 
@@ -11,7 +12,7 @@ import {
 } from "@mui/material";
 import Navbar from "./shared/Navbar";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+
 import { toast } from "sonner";
 import { APPLICATION_API_POINT, JOB_API_POINT } from "../utils/Apicall";
 import WorkIcon from "@mui/icons-material/Work";

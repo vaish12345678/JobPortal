@@ -1,9 +1,9 @@
 
-
+import axios from "axios";
 import { useLocation } from "react-router-dom";
 import Navbar from "./shared/Navbar";
 import Job from "./Job";
-import axios from "axios";
+
 import { useState, useEffect } from "react";
 import { JOB_API_POINT } from "../utils/Apicall";
 
