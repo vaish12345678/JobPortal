@@ -123,27 +123,23 @@ npm run dev
 ### **Authentication**
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | `/api/v1/auth/register` | Register new user |
-| POST | `/api/v1/auth/login` | Login user |
+| POST | `/api/v1/user/register` | Register new user |
+| POST | `/api/v1/user/login` | Login user |
 
 ### **Jobs**
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | `/api/v1/jobs` | Fetch all jobs |
-| GET | `/api/v1/jobs/:id` | Fetch job by ID |
-| POST | `/api/v1/jobs` | Create job (Admin) |
-| PUT | `/api/v1/jobs/:id` | Update job |
-| DELETE | `/api/v1/jobs/:id` | Delete job |
-
+| GET | `/api/v1/job/get` | Fetch all jobs |
+| GET | `/api/v1/job/:id` | Fetch job by ID |
+| POST | `/api/v1/job/post` | Create job (Admin) |
 
 ### **Applications**
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | `/api/v1/apply` | Apply for job |
-| GET | `/api/v1/applications/:userId` | Get applications by user |
+| POST | `/api/v1/application/apply/:id` | Apply for job |
+| GET | `/api/v1/application/get` | Get applications by user |
 
 ---
-
 ##  Features Highlight
 
 - Fully responsive UI with Tailwind  
@@ -155,8 +151,6 @@ npm run dev
 ---
 
 ##  Future Improvements (Optional)
-- Role-based admin authentication  
-- Company profiles  
 - Interview scheduling  
 - Search suggestions & AI job recommendations  
 
