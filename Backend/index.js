@@ -38,12 +38,32 @@ app.get("/home",(req,res)=>{
 // };
 //  app.use(cors(corsOptions));
 
+import cors from "cors";
 
-const corsOptions = {
-  origin: ["http://localhost:5173", "https://effulgent-gelato-4f5d9e.netlify.app/"],
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://effulgent-gelato-4f5d9e.netlify.app"
+];
+
+app.use(cors({
+  origin: function(origin, callback) {
+    // allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = `CORS policy does not allow access from ${origin}`;
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+  credentials: true, // allow cookies
+}));
+
+// Handle preflight for all routes
+app.options("*", cors({
+  origin: allowedOrigins,
   credentials: true
-};
- app.use(cors(corsOptions));
+}));
+
 
 //apis
 app.use("/api/v1/user",userRoutes);
