@@ -13,11 +13,15 @@ import jobRoutes from "./routes/job.route.js";
 import applicationRoutes from "./routes/application.route.js";
 import profileRoutes from "./routes/profile.js";
 
+// const corsOptions={
+//     origin:"*",//frontend server connect to apis
+//     credentials:true
+// }
+
 const corsOptions={
     origin:"*",//frontend server connect to apis
     credentials:true
 }
-
 app.use(cors(corsOptions));
 
 
