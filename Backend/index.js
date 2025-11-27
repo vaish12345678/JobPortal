@@ -13,17 +13,12 @@ import jobRoutes from "./routes/job.route.js";
 import applicationRoutes from "./routes/application.route.js";
 import profileRoutes from "./routes/profile.js";
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://effulgent-gelato-4f5d9e.netlify.app"
-];
+const corsOptions={
+    origin:"*",//frontend server connect to apis
+    credentials:true
+}
 
-app.use(
-  cors({
-    origin: allowedOrigins,
-    credentials: true
-  })
-);
+app.use(cors(corsOptions));
 
 
 
