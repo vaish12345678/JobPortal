@@ -19,7 +19,7 @@ const LatestJob = () => {
         });
         setJobs(res.data.jobs||[]);
         setLoading(false);
-      } catch{
+      } catch (err){
         console.log("failed to fetch latest jobs",err);
         setLoading(false);
       }

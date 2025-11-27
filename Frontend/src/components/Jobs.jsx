@@ -1,8 +1,9 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Navbar from "./shared/Navbar";
 import FilterCard from "./FilterCard";
 import Job from "./Job";
-import axios from "axios";
+
 import { JOB_API_POINT } from "../utils/Apicall";
 
 const Jobs = () => {

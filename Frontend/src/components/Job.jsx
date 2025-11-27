@@ -1,7 +1,7 @@
 import React from "react";
 import Avatar from "@mui/material/Avatar";
 import { useNavigate } from "react-router-dom";
-
+import axios from "axios";
 const Job = ({job}) => {
   const navigate= useNavigate();
   
