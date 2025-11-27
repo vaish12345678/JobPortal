@@ -32,6 +32,13 @@ app.get("/home",(req,res)=>{
 // app.use(cors(corsOptions));
 
 
+// const corsOptions = {
+//   origin: ["http://localhost:5173", "https://effulgent-gelato-4f5d9e.netlify.app/"],
+//   credentials: true
+// };
+//  app.use(cors(corsOptions));
+
+
 const corsOptions = {
   origin: ["http://localhost:5173", "https://effulgent-gelato-4f5d9e.netlify.app/"],
   credentials: true
