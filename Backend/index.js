@@ -33,7 +33,7 @@ app.get("/home",(req,res)=>{
 
 
 const corsOptions = {
-  origin: ["http://localhost:5173", "https://cosmic-figolla-41f889.netlify.app/"],
+  origin: ["http://localhost:5173", "https://effulgent-gelato-4f5d9e.netlify.app/"],
   credentials: true
 };
  app.use(cors(corsOptions));
