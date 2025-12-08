@@ -14,12 +14,12 @@ import applicationRoutes from "./routes/application.route.js";
 import profileRoutes from "./routes/profile.js";
 
 // const corsOptions={
-//     origin:"*",//frontend server connect to apis
+//     origin:"http://localhost:5173",//frontend server connect to apis
 //     credentials:true
 // }
 
 const corsOptions={
-    origin:"*",//frontend server connect to apis
+    origin:process.env.ALLOWED_ORIGIN,//frontend server connect to apis
     credentials:true
 }
 app.use(cors(corsOptions));
