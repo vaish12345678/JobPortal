@@ -10,6 +10,7 @@ export const registerCompany= async(req,res)=>{
                 success:false,
             });
         }
+        
         let company=await Company.findOne({name:companyName});//This checks if a company with the same name already exists in your MongoDB.
         //company found and unique
         if(company){
@@ -38,7 +39,7 @@ export const registerCompany= async(req,res)=>{
 export const getMyCompany= async(req,res)=>{
     try{
         const userId= req.user._id;//logged in user id
-          console.log("req.user:", req.user); // ✅ check if this exists
+          console.log("req.user:", req.user); 
         const company= await Company.findOne({userId});
         if(!company){
             return res.status(400).json({
