@@ -7,8 +7,29 @@ Admins can create job listings, view applicants, and manage job postings from a 
 This project demonstrates **real-world job platform functionalities** with clean UI, authentication, forms, filters, and full CRUD operations.
 
 
-##  Key Features
+## Highlights
+- JWT Authentication with Admin & User roles
+- Resume upload using Multer + Cloudinary
+- Admin dashboard for managing jobs & applicants
+- Advanced job filtering (role, location, experience)
 
+🔗 Live Demo:https://job-portal-i6kb.vercel.app/
+🔗 GitHub Repository:https://github.com/vaish12345678/JobPortal
+
+---
+## Screenshots
+
+| Home Page | Job Listings | Create Job |
+|-----------|-------------|------------|
+| ![Home Page](screenshots/Home.png) | ![Job Listings](screenshots/JobListing.png) | ![Create Job](screenshots/CreateCompany.png) |
+
+| User Profile | 
+|--------------|
+| ![User Profile](screenshots/viewProfile.png) | 
+
+
+
+##  Key Features
 ###  User Features
 -  Secure Login & Registration  
 -  Browse jobs with filters (title, category, location, experience)  
@@ -41,18 +62,6 @@ This project demonstrates **real-world job platform functionalities** with clean
 - Multer (Resume Upload)
 - Cloudinary
 - CORS  
-
----
-## Screenshots
-
-| Home Page | Job Listings | Create Job |
-|-----------|-------------|------------|
-| ![Home Page](screenshots/Home.png) | ![Job Listings](screenshots/JobListing.png) | ![Create Job](screenshots/CreateCompany.png) |
-
-| User Profile | 
-|--------------|
-| ![User Profile](screenshots/viewProfile.png) | 
-
 
 ##  Folder Structure
 
