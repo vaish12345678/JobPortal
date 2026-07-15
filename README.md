@@ -1,7 +1,7 @@
 
-# JobPortal — MERN Stack Job Posting & Recruitment Platform
+# CareerConnect — MERN Stack Job Posting & Recruitment Platform
 
-JobPortal is a full-stack web application built using the **MERN stack** that allows users to search for jobs, apply online, and manage their profiles.  
+CareerConnect is a full-stack web application built using the **MERN stack** that allows users to search for jobs, apply online, and manage their profiles.  
 Admins can create job listings, view applicants, and manage job postings from a dedicated dashboard.
 
 This project demonstrates **real-world job platform functionalities** with clean UI, authentication, forms, filters, and full CRUD operations.
